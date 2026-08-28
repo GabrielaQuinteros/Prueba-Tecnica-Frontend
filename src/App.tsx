@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage';
 import { NewOrderPage } from './pages/NewOrderPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { RegisterPage } from './pages/RegisterPage';
+import './App.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = sessionStorage.getItem('boxful_token');
