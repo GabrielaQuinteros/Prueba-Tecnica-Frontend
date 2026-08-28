@@ -42,7 +42,6 @@ export function OrdersPage() {
 
       {error && <p className="form-error">{error}</p>}
 
-       // que muestre un mensaje si no hay ordenes
       {orders.length === 0 && !error ? (
         <section className="empty-state">
           <h2>Aún no tienes órdenes</h2>
