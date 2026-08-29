@@ -405,3 +405,242 @@
     text-align: center;
   }
 }
+
+/* para las ordenes */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-heading span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.packages-list {
+  display: grid;
+  gap: 14px;
+}
+
+.package-card {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #dbe4b4;
+  border-radius: 12px;
+  background: #fbfff1;
+}
+
+.package-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.package-card-header strong {
+  color: #365314;
+}
+
+.remove-package {
+  padding: 6px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  color: #b91c1c;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.remove-package:hover {
+  background: #fef2f2;
+}
+
+.add-package {
+  min-height: 44px;
+  border: 1px dashed #94a3b8;
+  border-radius: 10px;
+  color: #334155;
+  background: #ffffff;
+  font-weight: 700;
+}
+
+.add-package:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+/* para el layout */
+.sidebar-title {
+  margin: 0 12px 22px;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.brand {
+  color: #ff3d00;
+}
+
+.brand-symbol {
+  display: grid;
+  width: 34px;
+  height: 30px;
+  place-items: center;
+  color: #ff3d00;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(-18deg);
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100px;
+  padding: 0 42px 0 24px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #202044;
+  background: #ffffff;
+  font-size: 22px;
+}
+
+.user-name {
+  color: #202044;
+  font-size: 20px;
+}
+
+.app-content {
+  padding-top: 0;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    min-height: 76px;
+    padding: 0 18px;
+    font-size: 18px;
+  }
+
+  .user-name {
+    font-size: 15px;
+  }
+}
+
+/*para el logo de boxful*/
+
+.brand {
+  padding-left: 4px;
+  color: #ff3401;
+}
+
+.brand-logo {
+  display: block;
+  width: 160px;
+  height: 64px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+
+/*para el login*/
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(
+    90deg,
+    #f8fafc 0%,
+    #f8fafc 51%,
+    #eeeeee 51%,
+    #eeeeee 100%
+  );
+}
+
+.auth-card {
+  width: 51%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 72px 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.auth-card form {
+  width: 100%;
+  max-width: 870px;
+}
+
+.auth-card h1 {
+  color: #202044;
+  font-size: 30px;
+}
+
+.auth-card > p {
+  color: #666666;
+  font-size: 18px;
+}
+
+.auth-card input {
+  min-height: 64px;
+  border-radius: 10px;
+  border-color: #e5e7eb;
+  font-size: 16px;
+}
+
+.auth-card button[type='submit'] {
+  min-height: 64px;
+  border-radius: 10px;
+  background: #3048d5;
+  font-size: 18px;
+}
+
+@media (max-width: 760px) {
+  .auth-page {
+    background: #f8fafc;
+  }
+
+  .auth-card {
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 22px;
+  }
+}
+
+/*para los bordes y estilo*/
+
+.auth-card select {
+  width: 100%;
+  min-height: 64px;
+  padding: 0 13px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #666666;
+  background: #ffffff;
+  font-size: 16px;
+  outline: none;
+}
+
+.auth-card select:focus {
+  border-color: #3048d5;
+  box-shadow: 0 0 0 3px rgb(48 72 213 / 12%);
+}
+
+.auth-card input::placeholder,
+.auth-card select:invalid {
+  color: #b7b7b7;
+}

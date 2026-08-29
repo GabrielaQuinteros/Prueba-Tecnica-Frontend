@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import type { AuthResponse } from '../types';
 
-
-const initialForm = { //los valores del form
+const initialForm = {
   firstName: '',
   lastName: '',
   gender: '',
@@ -21,9 +20,9 @@ export function RegisterPage() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
 
-
-  // se actualiza el campo q el usuario modifica
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+  function handleChange(
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) {
     setForm((current) => ({
       ...current,
       [event.target.name]: event.target.value,
@@ -33,17 +32,15 @@ export function RegisterPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
-     //que las dos contaseñas sean iguales
+
     if (form.password !== form.repeatPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
 
-    try { // se envian los datos del registro al backend
+    try {
       const { data } = await api.post<AuthResponse>('/auth/register', form);
 
-
-      // se guarda el token y llevamos al usuario a sus órdenes
       sessionStorage.setItem('boxful_token', data.accessToken);
       navigate('/orders');
     } catch {
@@ -54,62 +51,126 @@ export function RegisterPage() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <h1>Crea tu cuenta</h1>
-        <p>Regístrate para comenzar a enviar.</p>
+        <h1>Cuéntanos de ti</h1>
+        <p>Completa la información de registro</p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
             <label>
               Nombre
-              <input name="firstName" value={form.firstName} onChange={handleChange} required />
+              <input
+                name="firstName"
+                placeholder="Digita tu nombre"
+                value={form.firstName}
+                onChange={handleChange}
+                required
+              />
             </label>
 
             <label>
               Apellido
-              <input name="lastName" value={form.lastName} onChange={handleChange} required />
+              <input
+                name="lastName"
+                placeholder="Digita tu apellido"
+                value={form.lastName}
+                onChange={handleChange}
+                required
+              />
             </label>
 
             <label>
-              Género
-              <input name="gender" value={form.gender} onChange={handleChange} required />
+              Sexo
+              <select
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Seleccionar</option>
+                <option value="female">Femenino</option>
+                <option value="male">Masculino</option>
+                <option value="other">Otro</option>
+              </select>
             </label>
 
             <label>
               Fecha de nacimiento
-              <input name="birthDate" type="date" value={form.birthDate} onChange={handleChange} required />
+              <input
+                name="birthDate"
+                type="date"
+                value={form.birthDate}
+                onChange={handleChange}
+                required
+              />
             </label>
           </div>
 
           <label>
             Correo electrónico
-            <input name="email" type="email" value={form.email} onChange={handleChange} required />
+            <input
+              name="email"
+              type="email"
+              placeholder="Digitar correo"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
           </label>
 
           <div className="form-grid">
             <label>
               Código de país
-              <input name="whatsappCountryCode" value={form.whatsappCountryCode} onChange={handleChange} required />
+              <input
+                name="whatsappCountryCode"
+                value={form.whatsappCountryCode}
+                onChange={handleChange}
+                required
+              />
             </label>
 
             <label>
-              WhatsApp
-              <input name="whatsappNumber" value={form.whatsappNumber} onChange={handleChange} required />
+              Número de whatsapp
+              <input
+                name="whatsappNumber"
+                placeholder="7777 7777"
+                value={form.whatsappNumber}
+                onChange={handleChange}
+                required
+              />
             </label>
           </div>
 
-          <label>
-            Contraseña
-            <input name="password" type="password" value={form.password} onChange={handleChange} minLength={8} required />
-          </label>
+          <div className="form-grid">
+            <label>
+              Contraseña
+              <input
+                name="password"
+                type="password"
+                placeholder="Digitar contraseña"
+                value={form.password}
+                onChange={handleChange}
+                minLength={8}
+                required
+              />
+            </label>
 
-          <label>
-            Repite la contraseña
-            <input name="repeatPassword" type="password" value={form.repeatPassword} onChange={handleChange} minLength={8} required />
-          </label>
+            <label>
+              Repetir contraseña
+              <input
+                name="repeatPassword"
+                type="password"
+                placeholder="Digitar contraseña"
+                value={form.repeatPassword}
+                onChange={handleChange}
+                minLength={8}
+                required
+              />
+            </label>
+          </div>
 
           {error && <p className="form-error">{error}</p>}
 
-          <button type="submit">Crear cuenta</button>
+          <button type="submit">Siguiente</button>
         </form>
 
         <p>

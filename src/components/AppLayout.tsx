@@ -1,7 +1,12 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import logo from '../assets/boxful-logo.png';
 
 export function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isCreateOrder = location.pathname.startsWith('/orders/new');
+  const pageTitle = isCreateOrder ? 'Crear orden' : 'Mis envíos';
 
   function handleLogout() {
     sessionStorage.removeItem('boxful_token');
@@ -12,9 +17,10 @@ export function AppLayout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-mark">B</span>
-          <span>boxful</span>
+            <img className="brand-logo" src={logo} alt="Boxful" />
         </div>
+
+        <p className="sidebar-title">MENÚ</p>
 
         <nav className="sidebar-nav">
           <NavLink
@@ -34,7 +40,7 @@ export function AppLayout() {
             to="/orders"
             end
           >
-            <span>◌</span>
+            <span>⌕</span>
             Historial
           </NavLink>
         </nav>
@@ -44,9 +50,16 @@ export function AppLayout() {
         </button>
       </aside>
 
-      <section className="app-content">
-        <Outlet />
-      </section>
+      <div className="app-main">
+        <header className="topbar">
+          <span>{pageTitle}</span>
+          <span className="user-name">Ana Prueba</span>
+        </header>
+
+        <section className="app-content">
+          <Outlet />
+        </section>
+      </div>
     </div>
   );
 }
