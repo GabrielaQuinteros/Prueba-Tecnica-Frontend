@@ -120,12 +120,14 @@ export function RegisterPage() {
           <div className="form-grid">
             <label>
               Código de país
-              <input
+              <select
                 name="whatsappCountryCode"
                 value={form.whatsappCountryCode}
                 onChange={handleChange}
                 required
-              />
+              >
+                <option value="+503">503</option>
+              </select>
             </label>
 
             <label>
