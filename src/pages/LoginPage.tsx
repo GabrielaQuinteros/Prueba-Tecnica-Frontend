@@ -32,14 +32,15 @@ export function LoginPage() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <h1>Bienvenido a Boxful</h1>
-        <p>Ingresa para gestionar tus envíos.</p>
+        <h1>Bienvenido</h1>
+        <p>Por favor ingresa tus credenciales</p>
 
         <form onSubmit={handleSubmit}>
           <label>
             Correo electrónico
             <input
               type="email"
+              placeholder="Digita tu correo"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
@@ -50,6 +51,7 @@ export function LoginPage() {
             Contraseña
             <input
               type="password"
+              placeholder="Digita tu contraseña"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
@@ -62,7 +64,7 @@ export function LoginPage() {
         </form>
 
         <p>
-          ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
+          ¿Necesitas una cuenta? <Link to="/register">Regístrate aquí</Link>
         </p>
       </section>
     </main>
