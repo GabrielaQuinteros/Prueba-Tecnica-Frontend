@@ -644,3 +644,258 @@
 .auth-card select:invalid {
   color: #b7b7b7;
 }
+
+/*para crear la orden*/
+
+.page-header {
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  color: #202044;
+}
+
+.page-description {
+  max-width: 980px;
+  margin: 12px 0 0;
+  color: #666666;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ajuste del sidebar */
+.sidebar {
+  width: 340px;
+  padding: 40px;
+  background: #f8f9fb;
+}
+
+.brand {
+  padding: 0;
+  margin-bottom: 42px;
+}
+
+.sidebar-title {
+  margin: 0 0 26px;
+}
+
+.sidebar-nav {
+  gap: 18px;
+}
+
+.sidebar-link {
+  min-height: 72px;
+  padding: 0 32px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.sidebar-link.active {
+  background: #3048d5;
+}
+
+@media (max-width: 720px) {
+  .sidebar {
+    width: 72px;
+    padding: 20px 10px;
+  }
+}
+
+.orders-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 56px 24px 64px;
+  background: #f8f9fb;
+}
+
+.page-header {
+  display: block;
+  max-width: 1044px;
+  margin: 0 auto 52px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #202044;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.page-description {
+  margin-top: 12px;
+  color: #666666;
+  font-size: 16px;
+}
+
+.order-form {
+  width: 100%;
+  max-width: 1044px;
+  margin: 0 auto;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+
+/* para distribución del form */
+.order-form {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px 20px;
+}
+
+.order-form > h2,
+.order-form > .section-heading,
+.order-form > .packages-list,
+.order-form > .add-package,
+.order-form > .form-error {
+  grid-column: 1 / -1;
+}
+
+.order-form > label {
+  gap: 8px;
+  color: #202044;
+  font-size: 13px;
+}
+
+.order-form > label:first-of-type {
+  grid-column: span 8;
+}
+
+.order-form > label:nth-of-type(2) {
+  grid-column: span 4;
+}
+
+.order-form > .form-grid {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 20px;
+}
+
+.order-form input {
+  min-height: 48px;
+  border-radius: 8px;
+  border-color: #e5e7eb;
+}
+
+@media (max-width: 760px) {
+  .order-form {
+    grid-template-columns: 1fr;
+  }
+
+  .order-form > label:first-of-type,
+  .order-form > label:nth-of-type(2),
+  .order-form > .form-grid {
+    grid-column: 1;
+  }
+
+  .order-form > .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* botones de navegación */
+.order-form > .button-primary {
+  grid-column: 1 / -1;
+  justify-self: end;
+  min-width: 160px;
+  min-height: 48px;
+  border-radius: 8px;
+  background: #3048d5;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.form-actions .button {
+  min-width: 140px;
+  min-height: 48px;
+  border-radius: 8px;
+}
+
+@media (max-width: 560px) {
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .form-actions .button,
+  .order-form > .button-primary {
+    width: 100%;
+  }
+}
+
+/*para los campos del telefono*/
+.phone-input {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+}
+
+.phone-input input:first-child {
+  text-align: center;
+  color: #666666;
+}
+
+@media (max-width: 560px) {
+  .phone-input {
+    grid-template-columns: 80px 1fr;
+  }
+}
+
+/* seccion del producto  */
+.section-heading h2 {
+  margin: 0;
+  color: #202044;
+  font-size: 18px;
+}
+
+.package-card {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f7f8fa;
+}
+
+.package-card-header strong {
+  color: #202044;
+  font-size: 15px;
+}
+
+.package-card .form-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.package-card label {
+  color: #202044;
+  font-size: 12px;
+}
+
+.package-card input {
+  min-height: 48px;
+  border-radius: 8px;
+}
+
+.add-package {
+  min-height: 48px;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  color: #555555;
+  background: #ffffff;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .package-card .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
