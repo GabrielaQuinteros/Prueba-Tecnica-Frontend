@@ -89,6 +89,7 @@ export function RegisterPage() {
       const { data } = await api.post<AuthResponse>('/auth/register', form);
 
       sessionStorage.setItem('boxful_token', data.accessToken);
+      sessionStorage.setItem('boxful_user', JSON.stringify(data.user));
       navigate('/orders');
     } catch (requestError) {
       if (
@@ -212,8 +213,8 @@ export function RegisterPage() {
 
                     <i
                       className={`fi ${showCountryMenu
-                          ? 'fi-rr-angle-small-up'
-                          : 'fi-rr-angle-small-down'
+                        ? 'fi-rr-angle-small-up'
+                        : 'fi-rr-angle-small-down'
                         }`}
                       aria-hidden="true"
                     />
