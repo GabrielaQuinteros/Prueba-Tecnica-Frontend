@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import type { AuthResponse } from '../types';
+import { isAxiosError } from 'axios';
 
 const initialForm = {
   firstName: '',
@@ -21,6 +22,9 @@ export function RegisterPage() {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -31,7 +35,7 @@ export function RegisterPage() {
     }));
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
 
@@ -40,23 +44,44 @@ export function RegisterPage() {
       return;
     }
 
+    setShowPhoneConfirmation(true);
+  }
+
+  async function handleConfirmRegistration() {
+    setError('');
+    setIsSubmitting(true);
+
     try {
       const { data } = await api.post<AuthResponse>('/auth/register', form);
 
       sessionStorage.setItem('boxful_token', data.accessToken);
       navigate('/orders');
-    } catch {
-      setError('No se pudo crear la cuenta');
+    } catch (requestError) {
+      if (
+        isAxiosError(requestError) &&
+        requestError.response?.status === 409
+      ) {
+        setError(
+          'Este correo ya está registrado. Usa un correo diferente o inicia sesión.',
+        );
+      } else {
+        setError(
+          'No se pudo crear la cuenta. Verifica los datos e inténtalo nuevamente.',
+        );
+      }
+
+      setShowPhoneConfirmation(false);
+    } finally {
+      setIsSubmitting(false);
     }
   }
-
   return (
     <main className="auth-page">
       <section className="auth-card">
         <h1>Cuéntanos de ti</h1>
         <p>Completa la información de registro</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="form-grid">
             <label>
               Nombre
@@ -112,6 +137,7 @@ export function RegisterPage() {
             <input
               name="email"
               type="email"
+              autoComplete="off"
               placeholder="Digitar correo"
               value={form.email}
               onChange={handleChange}
@@ -151,6 +177,7 @@ export function RegisterPage() {
                 <input
                   name="password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   placeholder="Digitar contraseña"
                   value={form.password}
                   onChange={handleChange}
@@ -170,8 +197,8 @@ export function RegisterPage() {
                 >
                   <i
                     className={`fi ${showPassword
-                        ? 'fi-rr-eye-crossed'
-                        : 'fi-rr-eye'
+                      ? 'fi-rr-eye-crossed'
+                      : 'fi-rr-eye'
                       }`}
                     aria-hidden="true"
                   />
@@ -185,6 +212,7 @@ export function RegisterPage() {
                 <input
                   name="repeatPassword"
                   type={showRepeatPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   placeholder="Digitar contraseña"
                   value={form.repeatPassword}
                   onChange={handleChange}
@@ -206,8 +234,8 @@ export function RegisterPage() {
                 >
                   <i
                     className={`fi ${showRepeatPassword
-                        ? 'fi-rr-eye-crossed'
-                        : 'fi-rr-eye'
+                      ? 'fi-rr-eye-crossed'
+                      : 'fi-rr-eye'
                       }`}
                     aria-hidden="true"
                   />
@@ -225,6 +253,63 @@ export function RegisterPage() {
           ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
         </p>
       </section>
+
+      {showPhoneConfirmation && (
+        <div className="phone-modal-backdrop">
+          <section
+            className="phone-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="phone-confirmation-title"
+          >
+            <button
+              className="phone-modal-close"
+              type="button"
+              aria-label="Cerrar confirmación"
+              onClick={() => setShowPhoneConfirmation(false)}
+              disabled={isSubmitting}
+            >
+              <i className="fi fi-rr-cross-small" aria-hidden="true" />
+            </button>
+
+            <div className="phone-modal-icon" aria-hidden="true">
+              <i className="fi fi-rr-triangle-warning" />
+            </div>
+
+            <h2 id="phone-confirmation-title">
+              Confirmar número <strong>de teléfono</strong>
+            </h2>
+
+            <p>
+              Está seguro de que desea continuar con el número{' '}
+              <strong>
+                {form.whatsappCountryCode} {form.whatsappNumber}
+              </strong>
+              ?
+            </p>
+
+            <div className="phone-modal-actions">
+              <button
+                className="phone-modal-cancel"
+                type="button"
+                onClick={() => setShowPhoneConfirmation(false)}
+                disabled={isSubmitting}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="phone-modal-confirm"
+                type="button"
+                onClick={handleConfirmRegistration}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Registrando...' : 'Aceptar'}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
