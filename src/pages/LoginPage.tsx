@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { isAxiosError } from 'axios';
 import { api } from '../lib/api';
 import type { AuthResponse } from '../types';
+import loginImage from '../assets/boxful1.png';
 
 export function LoginPage() {
 
@@ -79,6 +80,10 @@ export function LoginPage() {
         <p>
           ¿Necesitas una cuenta? <Link to="/register">Regístrate aquí</Link>
         </p>
+      </section>
+
+      <section className="auth-visual" aria-hidden="true">
+        <img src={loginImage} alt="" />
       </section>
     </main>
   );

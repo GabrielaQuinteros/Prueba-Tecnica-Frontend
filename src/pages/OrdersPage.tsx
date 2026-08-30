@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import type { Order } from '../types';
 
@@ -50,8 +50,7 @@ export function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [draftFilters, setDraftFilters] =
     useState<DateFilters>(initialFilters);
-  const [appliedFilters, setAppliedFilters] =
-    useState<DateFilters>(initialFilters);
+
   const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -71,35 +70,14 @@ export function OrdersPage() {
       });
   }, []);
 
-  const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
-      const orderDate = order.scheduledDate.slice(0, 10);
-
-      if (
-        appliedFilters.startDate &&
-        orderDate < appliedFilters.startDate
-      ) {
-        return false;
-      }
-
-      if (
-        appliedFilters.endDate &&
-        orderDate > appliedFilters.endDate
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [orders, appliedFilters]);
 
   const allVisibleOrdersSelected =
-    filteredOrders.length > 0 &&
-    filteredOrders.every((order) =>
+    orders.length > 0 &&
+    orders.every((order) =>
       selectedOrderIds.includes(order.id),
     );
 
-  function handleSearch() {
+  async function handleSearch() {
     setError('');
 
     if (
@@ -111,13 +89,28 @@ export function OrdersPage() {
       return;
     }
 
-    setAppliedFilters(draftFilters);
-    setSelectedOrderIds([]);
-    setShowDateFilters(false);
+    setIsLoading(true);
+
+    try {
+      const { data } = await api.get<Order[]>('/orders', {
+        params: {
+          from: draftFilters.startDate || undefined,
+          to: draftFilters.endDate || undefined,
+        },
+      });
+
+      setOrders(data);
+      setSelectedOrderIds([]);
+      setShowDateFilters(false);
+    } catch {
+      setError('No se pudo buscar el historial de envíos.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function handleSelectAll() {
-    const visibleIds = filteredOrders.map((order) => order.id);
+    const visibleIds = orders.map((order) => order.id);
 
     if (allVisibleOrdersSelected) {
       setSelectedOrderIds((current) =>
@@ -145,9 +138,9 @@ export function OrdersPage() {
     const ordersToDownload =
       selectedOrderIds.length > 0
         ? orders.filter((order) =>
-            selectedOrderIds.includes(order.id),
-          )
-        : filteredOrders;
+          selectedOrderIds.includes(order.id),
+        )
+        : orders;
 
     if (ordersToDownload.length === 0) {
       setError('No hay envíos disponibles para descargar.');
@@ -199,9 +192,8 @@ export function OrdersPage() {
     const downloadLink = document.createElement('a');
 
     downloadLink.href = downloadUrl;
-    downloadLink.download = `envios-boxful-${
-      new Date().toISOString().split('T')[0]
-    }.csv`;
+    downloadLink.download = `envios-boxful-${new Date().toISOString().split('T')[0]
+      }.csv`;
 
     document.body.appendChild(downloadLink);
     downloadLink.click();
@@ -286,7 +278,7 @@ export function OrdersPage() {
       <section className="orders-table-container">
         {isLoading ? (
           <p className="history-message">Cargando envíos...</p>
-        ) : filteredOrders.length === 0 ? (
+        ) : orders.length === 0 ? (
           <p className="history-message">
             No se encontraron envíos para las fechas seleccionadas.
           </p>
@@ -313,7 +305,7 @@ export function OrdersPage() {
               </thead>
 
               <tbody>
-                {filteredOrders.map((order) => (
+                {orders.map((order) => (
                   <tr key={order.id}>
                     <td className="selection-column">
                       <input

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import type { AuthResponse } from '../types';
 import { isAxiosError } from 'axios';
+import registerImage from '../assets/boxful1.png';
 
 // los codigos para los paises en el telefono
 const countryCodes = [
@@ -340,6 +341,10 @@ export function RegisterPage() {
 
           <button type="submit">Siguiente</button>
         </form>
+      </section>
+
+      <section className="auth-visual" aria-hidden="true">
+        <img src={registerImage} alt="" />
       </section>
 
       {showPhoneConfirmation && (
