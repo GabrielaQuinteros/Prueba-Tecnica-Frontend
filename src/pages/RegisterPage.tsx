@@ -19,6 +19,8 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -145,28 +147,72 @@ export function RegisterPage() {
           <div className="form-grid">
             <label>
               Contraseña
-              <input
-                name="password"
-                type="password"
-                placeholder="Digitar contraseña"
-                value={form.password}
-                onChange={handleChange}
-                minLength={8}
-                required
-              />
+              <span className="password-input">
+                <input
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Digitar contraseña"
+                  value={form.password}
+                  onChange={handleChange}
+                  minLength={8}
+                  required
+                />
+
+                <button
+                  className="password-toggle"
+                  type="button"
+                  aria-label={
+                    showPassword
+                      ? 'Ocultar contraseña'
+                      : 'Mostrar contraseña'
+                  }
+                  onClick={() => setShowPassword((visible) => !visible)}
+                >
+                  <i
+                    className={`fi ${showPassword
+                        ? 'fi-rr-eye-crossed'
+                        : 'fi-rr-eye'
+                      }`}
+                    aria-hidden="true"
+                  />
+                </button>
+              </span>
             </label>
 
             <label>
               Repetir contraseña
-              <input
-                name="repeatPassword"
-                type="password"
-                placeholder="Digitar contraseña"
-                value={form.repeatPassword}
-                onChange={handleChange}
-                minLength={8}
-                required
-              />
+              <span className="password-input">
+                <input
+                  name="repeatPassword"
+                  type={showRepeatPassword ? 'text' : 'password'}
+                  placeholder="Digitar contraseña"
+                  value={form.repeatPassword}
+                  onChange={handleChange}
+                  minLength={8}
+                  required
+                />
+
+                <button
+                  className="password-toggle"
+                  type="button"
+                  aria-label={
+                    showRepeatPassword
+                      ? 'Ocultar contraseña repetida'
+                      : 'Mostrar contraseña repetida'
+                  }
+                  onClick={() =>
+                    setShowRepeatPassword((visible) => !visible)
+                  }
+                >
+                  <i
+                    className={`fi ${showRepeatPassword
+                        ? 'fi-rr-eye-crossed'
+                        : 'fi-rr-eye'
+                      }`}
+                    aria-hidden="true"
+                  />
+                </button>
+              </span>
             </label>
           </div>
 
