@@ -341,7 +341,8 @@ export function NewOrderPage() {
             </div>
 
             <button className="add-package" type="button" onClick={addPackage}>
-              ＋ Agregar producto
+              <i className="fi fi-rr-plus" aria-hidden="true" />
+              Agregar producto
             </button>
           </>
         )}
@@ -351,7 +352,8 @@ export function NewOrderPage() {
 
         {step === 1 ? (
           <button className="button button-primary" type="submit">
-            Siguiente →
+            Siguiente
+            <i className="fi fi-rr-arrow-small-right" aria-hidden="true" />
           </button>
         ) : (
           <div className="form-actions">
@@ -360,7 +362,8 @@ export function NewOrderPage() {
               type="button"
               onClick={handleBack}
             >
-              ← Regresar
+              <i className="fi fi-rr-arrow-small-left" aria-hidden="true" />
+              Regresar
             </button>
 
             <button className="button button-primary" type="submit">

@@ -29,7 +29,9 @@ export function AppLayout() {
             }
             to="/orders/new"
           >
-            <span>＋</span>
+            <span className="sidebar-icon" aria-hidden="true">
+              <i className="fi fi-rr-plus" />
+            </span>
             Crear orden
           </NavLink>
 
@@ -40,7 +42,9 @@ export function AppLayout() {
             to="/orders"
             end
           >
-            <span>⌕</span>
+            <span className="sidebar-icon" aria-hidden="true">
+              <i className="fi fi-rr-search-alt" />
+            </span>
             Historial
           </NavLink>
         </nav>

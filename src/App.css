@@ -342,6 +342,16 @@
   text-align: center;
 }
 
+.sidebar-icon {
+  display: grid;
+  place-items: center;
+}
+
+.sidebar-icon i {
+  display: flex;
+  font-size: 18px;
+}
+
 .sidebar-link:hover,
 .sidebar-link.active {
   color: #ffffff;
@@ -546,8 +556,8 @@
 
 .brand-logo {
   display: block;
-  width: 160px;
-  height: 64px;
+  width: 164px;
+  height: auto;
   object-fit: contain;
   object-position: left center;
 }
