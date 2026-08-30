@@ -174,13 +174,17 @@ export function RegisterPage() {
 
             <label>
               Fecha de nacimiento
-              <input
-                name="birthDate"
-                type="date"
-                value={form.birthDate}
-                onChange={handleChange}
-                required
-              />
+              <span className="register-date-input">
+                <input
+                  name="birthDate"
+                  type="date"
+                  value={form.birthDate}
+                  onChange={handleChange}
+                  required
+                />
+
+                <i className="fi fi-rr-calendar" aria-hidden="true" />
+              </span>
             </label>
           </div>
 

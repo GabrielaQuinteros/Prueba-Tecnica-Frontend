@@ -251,3 +251,8 @@
     flex: 1;
   }
 }
+
+.orders-table th:last-child,
+.orders-table td:last-child {
+  text-align: center;
+}
