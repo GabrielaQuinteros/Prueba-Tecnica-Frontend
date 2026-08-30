@@ -44,6 +44,8 @@ const createPackage = (): PackageForm => ({
 const initialForm = {
   pickupAddress: '',
   scheduledDate: '',
+  cashOnDelivery: false,
+  expectedCollectionAmount: '',
   recipient: {
     firstName: '',
     lastName: '',
@@ -71,6 +73,27 @@ export function NewOrderPage() {
     setForm((current) => ({
       ...current,
       [event.target.name]: event.target.value,
+    }));
+  }
+
+  function toggleCashOnDelivery() {
+    setForm((current) => {
+      const cashOnDelivery = !current.cashOnDelivery;
+
+      return {
+        ...current,
+        cashOnDelivery,
+        expectedCollectionAmount: cashOnDelivery
+          ? current.expectedCollectionAmount
+          : '',
+      };
+    });
+  }
+
+  function updateCollectionAmount(event: ChangeEvent<HTMLInputElement>) {
+    setForm((current) => ({
+      ...current,
+      expectedCollectionAmount: event.target.value,
     }));
   }
 
@@ -147,6 +170,15 @@ export function NewOrderPage() {
   function handleNext(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
+
+    if (
+      form.cashOnDelivery &&
+      Number(form.expectedCollectionAmount) <= 0
+    ) {
+      setError('Ingresa un monto válido para el pago contra entrega.');
+      return;
+    }
+
     setStep(2);
   }
 
@@ -174,6 +206,14 @@ export function NewOrderPage() {
         scheduledDate: `${form.scheduledDate}T10:00:00.000Z`,
         recipient: form.recipient,
         packages: form.packages,
+        cashOnDelivery: form.cashOnDelivery,
+        ...(form.cashOnDelivery
+          ? {
+              expectedCollectionAmount: Number(
+                form.expectedCollectionAmount,
+              ),
+            }
+          : {}),
       });
 
       navigate('/orders');
@@ -370,6 +410,52 @@ export function NewOrderPage() {
                 />
               </label>
             </div>
+
+            <section
+              className={`cod-panel ${
+                form.cashOnDelivery ? 'cod-panel-active' : ''
+              }`}
+            >
+              <div className="cod-panel-header">
+                <h3>Pago contra entrega (PCE)</h3>
+
+                <button
+                  className={`cod-switch ${
+                    form.cashOnDelivery ? 'active' : ''
+                  }`}
+                  type="button"
+                  role="switch"
+                  aria-checked={form.cashOnDelivery}
+                  aria-label="Activar pago contra entrega"
+                  onClick={toggleCashOnDelivery}
+                >
+                  <span />
+                </button>
+              </div>
+
+              <div className="cod-panel-content">
+                <p>
+                  Tu cliente paga el monto que <strong>indiques</strong> al
+                  momento de la entrega
+                </p>
+
+                <label className="cod-amount-input">
+                  <span>$</span>
+
+                  <input
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="00.00"
+                    value={form.expectedCollectionAmount}
+                    onChange={updateCollectionAmount}
+                    disabled={!form.cashOnDelivery}
+                    required={form.cashOnDelivery}
+                    aria-label="Monto esperado del pago contra entrega"
+                  />
+                </label>
+              </div>
+            </section>
 
           </>
         )}
