@@ -925,3 +925,34 @@
   margin-top: 26px;
   text-align: center;
 }
+
+/*la contra*/
+
+.password-input {
+  position: relative;
+  display: block;
+}
+
+.password-input input {
+  padding-right: 54px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: #202044;
+  background: transparent;
+  transform: translateY(-50%);
+}
+
+.password-toggle i {
+  font-size: 18px;
+  line-height: 1;
+}
