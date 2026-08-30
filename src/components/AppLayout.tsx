@@ -60,7 +60,8 @@ export function AppLayout() {
         </nav>
 
         <button className="sidebar-logout" onClick={handleLogout}>
-          Cerrar sesión
+          <i className="fi fi-rr-sign-out-alt" aria-hidden="true" />
+          <span>Cerrar sesión</span>
         </button>
       </aside>
 

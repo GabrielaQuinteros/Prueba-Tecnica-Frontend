@@ -133,6 +133,9 @@
 }
 
 .sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: auto;
   padding: 12px 14px;
   border: 0;
@@ -141,6 +144,11 @@
   background: transparent;
   text-align: left;
   font-weight: 600;
+}
+
+.sidebar-logout i {
+  display: flex;
+  font-size: 18px;
 }
 
 .sidebar-logout:hover {
@@ -163,6 +171,7 @@
   min-height: 100px;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding: 0 42px 0 24px;
   border-bottom: 1px solid #e5e7eb;
   color: #202044;
@@ -171,8 +180,13 @@
 }
 
 .user-name {
+  min-width: 0;
+  overflow: hidden;
   color: #202044;
   font-size: 20px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Crear orden */
@@ -599,7 +613,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .order-form {
     grid-template-columns: 1fr;
     padding: 22px 18px;
@@ -629,7 +643,7 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .sidebar {
     width: 72px;
     padding: 20px 10px;
@@ -638,6 +652,10 @@
   .brand {
     justify-content: center;
     padding: 0 0 28px;
+  }
+
+  .brand-logo {
+    width: 48px;
   }
 
   .sidebar-link {
@@ -651,9 +669,13 @@
   }
 
   .sidebar-logout {
+    justify-content: center;
     padding: 12px 8px;
-    font-size: 0;
     text-align: center;
+  }
+
+  .sidebar-logout span {
+    display: none;
   }
 
   .topbar {
@@ -681,5 +703,17 @@
   .form-actions .button,
   .order-form > .button-primary {
     width: 100%;
+  }
+
+  .product-dimensions,
+  .added-dimensions {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .product-dimensions label .measurement-input,
+  .added-dimensions .added-product-value > span {
+    margin-left: 0;
+    border-radius: 8px;
   }
 }

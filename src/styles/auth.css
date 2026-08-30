@@ -168,6 +168,27 @@
     height: 64px;
 }
 
+.register-select-input {
+    position: relative;
+    display: block;
+}
+
+.register-select-input select {
+    padding-right: 48px;
+    appearance: none;
+}
+
+.register-select-input i {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    display: flex;
+    color: #202044;
+    font-size: 18px;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
 .register-date-input {
     position: relative;
     display: block;
@@ -284,7 +305,7 @@
     margin-top: 22px;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
     .register-card {
         justify-content: flex-start;
         padding: 36px 22px;
@@ -477,7 +498,7 @@
     opacity: 0.65;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
     .auth-page {
         background: #f8fafc;
     }

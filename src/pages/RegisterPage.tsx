@@ -159,17 +159,21 @@ export function RegisterPage() {
           <div className="form-grid">
             <label>
               Sexo
-              <select
-                name="gender"
-                value={form.gender}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccionar</option>
-                <option value="female">Femenino</option>
-                <option value="male">Masculino</option>
-                <option value="other">Otro</option>
-              </select>
+              <span className="register-select-input">
+                <select
+                  name="gender"
+                  value={form.gender}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="female">Femenino</option>
+                  <option value="male">Masculino</option>
+                  <option value="other">Otro</option>
+                </select>
+
+                <i className="fi fi-rr-angle-small-down" aria-hidden="true" />
+              </span>
             </label>
 
             <label>

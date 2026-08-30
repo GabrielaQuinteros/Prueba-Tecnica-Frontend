@@ -25,7 +25,7 @@ export function LoginPage() {
       // hay q guardar el token para las peticiones siguientes
       sessionStorage.setItem('boxful_token', data.accessToken);
       sessionStorage.setItem('boxful_user', JSON.stringify(data.user));
-      navigate('/orders');
+      navigate('/orders/new');
 
     } catch (requestError) {
       if (isAxiosError(requestError)) {
