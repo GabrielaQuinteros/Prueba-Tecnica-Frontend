@@ -956,3 +956,157 @@
   font-size: 18px;
   line-height: 1;
 }
+
+/*confirmacion del telefono*/
+
+.phone-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.28);
+}
+
+.phone-modal {
+  position: relative;
+  display: flex;
+  width: min(996px, 100%);
+  min-height: 628px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 48px 30px;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.phone-modal-close {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: #4b4b4b;
+  background: transparent;
+  font-size: 42px;
+  cursor: pointer;
+}
+
+.phone-modal-close i {
+  display: flex;
+}
+
+.phone-modal-icon {
+  display: grid;
+  width: 180px;
+  height: 180px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffad3e;
+  background: #fff3e2;
+  font-size: 82px;
+}
+
+.phone-modal-icon i {
+  display: flex;
+}
+
+.phone-modal h2 {
+  margin: 30px 0 14px;
+  color: #444444;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.phone-modal h2 strong {
+  font-weight: 700;
+}
+
+.phone-modal > p {
+  margin: 0;
+  color: #555555;
+  font-size: 28px;
+  line-height: 1.4;
+}
+
+.phone-modal > p strong {
+  font-weight: 700;
+}
+
+.phone-modal-actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 58px;
+}
+
+.phone-modal-actions button {
+  min-width: 224px;
+  height: 96px;
+  border-radius: 16px;
+  font-size: 30px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.phone-modal-cancel {
+  border: 1px solid #e2e2e2;
+  color: #4b4b4b;
+  background: #ffffff;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
+}
+
+.phone-modal-confirm {
+  border: 1px solid #3048d5;
+  color: #ffffff;
+  background: #3048d5;
+}
+
+.phone-modal-actions button:disabled,
+.phone-modal-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 720px) {
+  .phone-modal {
+    min-height: auto;
+    padding: 80px 24px 24px;
+  }
+
+  .phone-modal-icon {
+    width: 110px;
+    height: 110px;
+    font-size: 52px;
+  }
+
+  .phone-modal h2 {
+    font-size: 28px;
+  }
+
+  .phone-modal > p {
+    font-size: 18px;
+  }
+
+  .phone-modal-actions {
+    flex-direction: column-reverse;
+    margin-top: 36px;
+  }
+
+  .phone-modal-actions button {
+    width: 100%;
+    height: 58px;
+    font-size: 18px;
+  }
+}
