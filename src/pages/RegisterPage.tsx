@@ -4,6 +4,30 @@ import { api } from '../lib/api';
 import type { AuthResponse } from '../types';
 import { isAxiosError } from 'axios';
 
+// los codigos para los paises en el telefono
+const countryCodes = [
+  { country: 'Estados Unidos y Canadá', code: '+1' },
+  { country: 'México', code: '+52' },
+  { country: 'Argentina', code: '+54' },
+  { country: 'Brasil', code: '+55' },
+  { country: 'Chile', code: '+56' },
+  { country: 'Colombia', code: '+57' },
+  { country: 'Perú', code: '+51' },
+  { country: 'Bolivia', code: '+591' },
+  { country: 'Ecuador', code: '+593' },
+  { country: 'Paraguay', code: '+595' },
+  { country: 'Uruguay', code: '+598' },
+  { country: 'Venezuela', code: '+58' },
+  { country: 'Guatemala', code: '+502' },
+  { country: 'El Salvador', code: '+503' },
+  { country: 'Honduras', code: '+504' },
+  { country: 'Nicaragua', code: '+505' },
+  { country: 'Costa Rica', code: '+506' },
+  { country: 'Panamá', code: '+507' },
+  { country: 'España', code: '+34' },
+];
+
+
 const initialForm = {
   firstName: '',
   lastName: '',
@@ -24,7 +48,7 @@ export function RegisterPage() {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showCountryMenu, setShowCountryMenu] = useState(false);
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -34,6 +58,16 @@ export function RegisterPage() {
       [event.target.name]: event.target.value,
     }));
   }
+
+  function handleCountrySelection(code: string) {
+    setForm((current) => ({
+      ...current,
+      whatsappCountryCode: code,
+    }));
+
+    setShowCountryMenu(false);
+  }
+
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -77,11 +111,26 @@ export function RegisterPage() {
   }
   return (
     <main className="auth-page">
-      <section className="auth-card">
-        <h1>Cuéntanos de ti</h1>
+      <section className="auth-card register-card">
+        <div className="register-heading">
+          <Link
+            className="auth-back-link"
+            to="/login"
+            aria-label="Regresar al inicio de sesión"
+          >
+            <i className="fi fi-rr-angle-small-left" aria-hidden="true" />
+          </Link>
+
+          <h1>Cuéntanos de ti</h1>
+        </div>
+
         <p>Completa la información de registro</p>
 
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form
+          className="register-form"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
           <div className="form-grid">
             <label>
               Nombre
@@ -104,7 +153,9 @@ export function RegisterPage() {
                 required
               />
             </label>
+          </div>
 
+          <div className="form-grid">
             <label>
               Sexo
               <select
@@ -132,41 +183,73 @@ export function RegisterPage() {
             </label>
           </div>
 
-          <label>
-            Correo electrónico
-            <input
-              name="email"
-              type="email"
-              autoComplete="off"
-              placeholder="Digitar correo"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
           <div className="form-grid">
             <label>
-              Código de país
-              <select
-                name="whatsappCountryCode"
-                value={form.whatsappCountryCode}
+              Correo electrónico
+              <input
+                name="email"
+                type="email"
+                autoComplete="off"
+                placeholder="Digitar correo"
+                value={form.email}
                 onChange={handleChange}
                 required
-              >
-                <option value="+503">503</option>
-              </select>
+              />
             </label>
 
             <label>
               Número de whatsapp
-              <input
-                name="whatsappNumber"
-                placeholder="7777 7777"
-                value={form.whatsappNumber}
-                onChange={handleChange}
-                required
-              />
+              <span className="whatsapp-input">
+                <span className="country-code-field">
+                  <button
+                    className="country-code-trigger"
+                    type="button"
+                    aria-label="Seleccionar código de país"
+                    aria-expanded={showCountryMenu}
+                    onClick={() => setShowCountryMenu((open) => !open)}
+                  >
+                    <span>{form.whatsappCountryCode.replace('+', '')}</span>
+
+                    <i
+                      className={`fi ${showCountryMenu
+                          ? 'fi-rr-angle-small-up'
+                          : 'fi-rr-angle-small-down'
+                        }`}
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {showCountryMenu && (
+                    <div className="country-code-menu" role="listbox">
+                      {countryCodes.map(({ country, code }) => (
+                        <button
+                          className={`country-code-option ${form.whatsappCountryCode === code ? 'active' : ''
+                            }`}
+                          type="button"
+                          role="option"
+                          aria-selected={form.whatsappCountryCode === code}
+                          key={`${country}-${code}`}
+                          onClick={() => handleCountrySelection(code)}
+                        >
+                          <span>{country}</span>
+                          <strong>{code}</strong>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </span>
+
+                <input
+                  name="whatsappNumber"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="7777 7777"
+                  value={form.whatsappNumber}
+                  onChange={handleChange}
+                  aria-label="Número de whatsapp"
+                  required
+                />
+              </span>
             </label>
           </div>
 
@@ -248,10 +331,6 @@ export function RegisterPage() {
 
           <button type="submit">Siguiente</button>
         </form>
-
-        <p>
-          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
-        </p>
       </section>
 
       {showPhoneConfirmation && (
