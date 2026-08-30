@@ -1,15 +1,25 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/boxful-logo.png';
+import type { User } from '../types';
 
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const storedUser = sessionStorage.getItem('boxful_user');
+  const user = storedUser
+    ? (JSON.parse(storedUser) as User)
+    : null;
+
+  const userName = user
+    ? `${user.firstName} ${user.lastName}`
+    : 'Usuario';
 
   const isCreateOrder = location.pathname.startsWith('/orders/new');
   const pageTitle = isCreateOrder ? 'Crear orden' : 'Mis envíos';
 
   function handleLogout() {
     sessionStorage.removeItem('boxful_token');
+    sessionStorage.removeItem('boxful_user');
     navigate('/login');
   }
 
@@ -17,7 +27,7 @@ export function AppLayout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-            <img className="brand-logo" src={logo} alt="Boxful" />
+          <img className="brand-logo" src={logo} alt="Boxful" />
         </div>
 
         <p className="sidebar-title">MENÚ</p>
@@ -50,14 +60,15 @@ export function AppLayout() {
         </nav>
 
         <button className="sidebar-logout" onClick={handleLogout}>
-          Cerrar sesión
+          <i className="fi fi-rr-sign-out-alt" aria-hidden="true" />
+          <span>Cerrar sesión</span>
         </button>
       </aside>
 
       <div className="app-main">
         <header className="topbar">
           <span>{pageTitle}</span>
-          <span className="user-name">Ana Prueba</span>
+          <span className="user-name">{userName}</span>
         </header>
 
         <section className="app-content">

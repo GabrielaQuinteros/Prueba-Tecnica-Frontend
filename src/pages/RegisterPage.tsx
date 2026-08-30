@@ -89,6 +89,7 @@ export function RegisterPage() {
       const { data } = await api.post<AuthResponse>('/auth/register', form);
 
       sessionStorage.setItem('boxful_token', data.accessToken);
+      sessionStorage.setItem('boxful_user', JSON.stringify(data.user));
       navigate('/orders');
     } catch (requestError) {
       if (
@@ -158,28 +159,36 @@ export function RegisterPage() {
           <div className="form-grid">
             <label>
               Sexo
-              <select
-                name="gender"
-                value={form.gender}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccionar</option>
-                <option value="female">Femenino</option>
-                <option value="male">Masculino</option>
-                <option value="other">Otro</option>
-              </select>
+              <span className="register-select-input">
+                <select
+                  name="gender"
+                  value={form.gender}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="female">Femenino</option>
+                  <option value="male">Masculino</option>
+                  <option value="other">Otro</option>
+                </select>
+
+                <i className="fi fi-rr-angle-small-down" aria-hidden="true" />
+              </span>
             </label>
 
             <label>
               Fecha de nacimiento
-              <input
-                name="birthDate"
-                type="date"
-                value={form.birthDate}
-                onChange={handleChange}
-                required
-              />
+              <span className="register-date-input">
+                <input
+                  name="birthDate"
+                  type="date"
+                  value={form.birthDate}
+                  onChange={handleChange}
+                  required
+                />
+
+                <i className="fi fi-rr-calendar" aria-hidden="true" />
+              </span>
             </label>
           </div>
 
@@ -212,8 +221,8 @@ export function RegisterPage() {
 
                     <i
                       className={`fi ${showCountryMenu
-                          ? 'fi-rr-angle-small-up'
-                          : 'fi-rr-angle-small-down'
+                        ? 'fi-rr-angle-small-up'
+                        : 'fi-rr-angle-small-down'
                         }`}
                       aria-hidden="true"
                     />
