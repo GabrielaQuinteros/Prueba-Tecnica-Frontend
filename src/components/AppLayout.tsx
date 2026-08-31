@@ -30,8 +30,18 @@ export function AppLayout() {
 
     void loadSettlementSummary();
 
+    window.addEventListener(
+      'settlement-updated',
+      loadSettlementSummary,
+    );
+
     return () => {
       active = false;
+
+      window.removeEventListener(
+        'settlement-updated',
+        loadSettlementSummary,
+      );
     };
   }, [location.pathname]);
 

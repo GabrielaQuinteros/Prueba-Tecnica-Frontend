@@ -68,6 +68,7 @@ export function NewOrderPage() {
   const [error, setError] = useState('');
   const [step, setStep] = useState<1 | 2>(1);
   const [showCountryMenu, setShowCountryMenu] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   function updateRoot(event: ChangeEvent<HTMLInputElement>) {
     setForm((current) => ({
@@ -187,6 +188,26 @@ export function NewOrderPage() {
     setStep(1);
   }
 
+  function handleGoToHome() {
+    setShowSuccessModal(false);
+    navigate('/orders');
+  }
+
+  function handleCreateAnother() {
+    setForm({
+      ...initialForm,
+      recipient: {
+        ...initialForm.recipient,
+      },
+      packages: [],
+    });
+
+    setDraftPackage(createPackage());
+    setError('');
+    setStep(1);
+    setShowSuccessModal(false);
+  }
+
 
 
 
@@ -216,7 +237,8 @@ export function NewOrderPage() {
           : {}),
       });
 
-      navigate('/orders');
+      window.dispatchEvent(new Event('settlement-updated'));
+      setShowSuccessModal(true);
     } catch {
       setError('No se pudo crear la orden. Revisa los datos.');
     }
@@ -435,7 +457,7 @@ export function NewOrderPage() {
 
               <div className="cod-panel-content">
                 <p>
-                  Tu cliente paga el monto que <strong>indiques</strong> al
+                  Tu cliente paga el <strong>monto que indiques</strong> al
                   momento de la entrega
                 </p>
 
@@ -629,6 +651,54 @@ export function NewOrderPage() {
 
 
       </form>
+
+      {showSuccessModal && (
+        <div className="success-modal-backdrop">
+          <section
+            className="success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="order-success-title"
+          >
+            <button
+              className="success-modal-close"
+              type="button"
+              aria-label="Cerrar"
+              onClick={handleGoToHome}
+            >
+              <i className="fi fi-rr-cross-small" aria-hidden="true" />
+            </button>
+
+            <div className="success-modal-icon" aria-hidden="true">
+              <i className="fi fi-rr-badge-check" />
+            </div>
+
+            <h2 id="order-success-title">
+              Orden <strong>enviada</strong>
+            </h2>
+
+            <p>La orden ha sido creada y enviada, puedes</p>
+
+            <div className="success-modal-actions">
+              <button
+                className="success-modal-home"
+                type="button"
+                onClick={handleGoToHome}
+              >
+                Ir a inicio
+              </button>
+
+              <button
+                className="success-modal-create"
+                type="button"
+                onClick={handleCreateAnother}
+              >
+                Crear otra
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
