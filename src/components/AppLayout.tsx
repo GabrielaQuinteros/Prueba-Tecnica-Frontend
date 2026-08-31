@@ -1,10 +1,50 @@
+import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/boxful-logo.png';
-import type { User } from '../types';
+import { api } from '../lib/api';
+import type { SettlementSummary, User } from '../types';
 
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [amountToSettle, setAmountToSettle] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadSettlementSummary() {
+      try {
+        const { data } = await api.get<SettlementSummary>(
+          '/orders/settlement-summary',
+        );
+
+        if (active) {
+          setAmountToSettle(data.amountToSettle);
+        }
+      } catch {
+        if (active) {
+          setAmountToSettle(0);
+        }
+      }
+    }
+
+    void loadSettlementSummary();
+
+    window.addEventListener(
+      'settlement-updated',
+      loadSettlementSummary,
+    );
+
+    return () => {
+      active = false;
+
+      window.removeEventListener(
+        'settlement-updated',
+        loadSettlementSummary,
+      );
+    };
+  }, [location.pathname]);
+
   const storedUser = sessionStorage.getItem('boxful_user');
   const user = storedUser
     ? (JSON.parse(storedUser) as User)
@@ -68,7 +108,20 @@ export function AppLayout() {
       <div className="app-main">
         <header className="topbar">
           <span>{pageTitle}</span>
-          <span className="user-name">{userName}</span>
+
+          <div className="topbar-right">
+            <span className="settlement-summary">
+              <i className="fi fi-rr-wallet" aria-hidden="true" />
+
+              <span className="settlement-summary-label">
+                Monto a liquidar
+              </span>
+
+              <strong>${amountToSettle.toFixed(2)}</strong>
+            </span>
+
+            <span className="user-name">{userName}</span>
+          </div>
         </header>
 
         <section className="app-content">

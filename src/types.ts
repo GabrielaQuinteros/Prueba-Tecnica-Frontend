@@ -35,6 +35,10 @@ export interface Recipient {
   instructions?: string;
 }
 
+export interface SettlementSummary {
+  amountToSettle: number;
+}
+
 // la info completa de una orden
 export interface Order {
   id: string;
@@ -45,5 +49,11 @@ export interface Order {
   packages: PackageItem[];
   packageCount: number;
   status: string;
+  cashOnDelivery: boolean;
+  expectedCollectionAmount?: number | null;
+  actualCollectedAmount?: number | null;
+  shippingCost?: number | null;
+  codCommission?: number | null;
+  settlementAmount?: number | null;
   createdAt: string;
 }

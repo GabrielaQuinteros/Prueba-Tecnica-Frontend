@@ -44,6 +44,8 @@ const createPackage = (): PackageForm => ({
 const initialForm = {
   pickupAddress: '',
   scheduledDate: '',
+  cashOnDelivery: false,
+  expectedCollectionAmount: '',
   recipient: {
     firstName: '',
     lastName: '',
@@ -66,11 +68,33 @@ export function NewOrderPage() {
   const [error, setError] = useState('');
   const [step, setStep] = useState<1 | 2>(1);
   const [showCountryMenu, setShowCountryMenu] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   function updateRoot(event: ChangeEvent<HTMLInputElement>) {
     setForm((current) => ({
       ...current,
       [event.target.name]: event.target.value,
+    }));
+  }
+
+  function toggleCashOnDelivery() {
+    setForm((current) => {
+      const cashOnDelivery = !current.cashOnDelivery;
+
+      return {
+        ...current,
+        cashOnDelivery,
+        expectedCollectionAmount: cashOnDelivery
+          ? current.expectedCollectionAmount
+          : '',
+      };
+    });
+  }
+
+  function updateCollectionAmount(event: ChangeEvent<HTMLInputElement>) {
+    setForm((current) => ({
+      ...current,
+      expectedCollectionAmount: event.target.value,
     }));
   }
 
@@ -147,12 +171,41 @@ export function NewOrderPage() {
   function handleNext(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
+
+    if (
+      form.cashOnDelivery &&
+      Number(form.expectedCollectionAmount) <= 0
+    ) {
+      setError('Ingresa un monto válido para el pago contra entrega.');
+      return;
+    }
+
     setStep(2);
   }
 
   function handleBack() {
     setError('');
     setStep(1);
+  }
+
+  function handleGoToHome() {
+    setShowSuccessModal(false);
+    navigate('/orders');
+  }
+
+  function handleCreateAnother() {
+    setForm({
+      ...initialForm,
+      recipient: {
+        ...initialForm.recipient,
+      },
+      packages: [],
+    });
+
+    setDraftPackage(createPackage());
+    setError('');
+    setStep(1);
+    setShowSuccessModal(false);
   }
 
 
@@ -174,9 +227,18 @@ export function NewOrderPage() {
         scheduledDate: `${form.scheduledDate}T10:00:00.000Z`,
         recipient: form.recipient,
         packages: form.packages,
+        cashOnDelivery: form.cashOnDelivery,
+        ...(form.cashOnDelivery
+          ? {
+              expectedCollectionAmount: Number(
+                form.expectedCollectionAmount,
+              ),
+            }
+          : {}),
       });
 
-      navigate('/orders');
+      window.dispatchEvent(new Event('settlement-updated'));
+      setShowSuccessModal(true);
     } catch {
       setError('No se pudo crear la orden. Revisa los datos.');
     }
@@ -371,6 +433,52 @@ export function NewOrderPage() {
               </label>
             </div>
 
+            <section
+              className={`cod-panel ${
+                form.cashOnDelivery ? 'cod-panel-active' : ''
+              }`}
+            >
+              <div className="cod-panel-header">
+                <h3>Pago contra entrega (PCE)</h3>
+
+                <button
+                  className={`cod-switch ${
+                    form.cashOnDelivery ? 'active' : ''
+                  }`}
+                  type="button"
+                  role="switch"
+                  aria-checked={form.cashOnDelivery}
+                  aria-label="Activar pago contra entrega"
+                  onClick={toggleCashOnDelivery}
+                >
+                  <span />
+                </button>
+              </div>
+
+              <div className="cod-panel-content">
+                <p>
+                  Tu cliente paga el <strong>monto que indiques</strong> al
+                  momento de la entrega
+                </p>
+
+                <label className="cod-amount-input">
+                  <span>$</span>
+
+                  <input
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="00.00"
+                    value={form.expectedCollectionAmount}
+                    onChange={updateCollectionAmount}
+                    disabled={!form.cashOnDelivery}
+                    required={form.cashOnDelivery}
+                    aria-label="Monto esperado del pago contra entrega"
+                  />
+                </label>
+              </div>
+            </section>
+
           </>
         )}
 
@@ -543,6 +651,54 @@ export function NewOrderPage() {
 
 
       </form>
+
+      {showSuccessModal && (
+        <div className="success-modal-backdrop">
+          <section
+            className="success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="order-success-title"
+          >
+            <button
+              className="success-modal-close"
+              type="button"
+              aria-label="Cerrar"
+              onClick={handleGoToHome}
+            >
+              <i className="fi fi-rr-cross-small" aria-hidden="true" />
+            </button>
+
+            <div className="success-modal-icon" aria-hidden="true">
+              <i className="fi fi-rr-badge-check" />
+            </div>
+
+            <h2 id="order-success-title">
+              Orden <strong>enviada</strong>
+            </h2>
+
+            <p>La orden ha sido creada y enviada, puedes</p>
+
+            <div className="success-modal-actions">
+              <button
+                className="success-modal-home"
+                type="button"
+                onClick={handleGoToHome}
+              >
+                Ir a inicio
+              </button>
+
+              <button
+                className="success-modal-create"
+                type="button"
+                onClick={handleCreateAnother}
+              >
+                Crear otra
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

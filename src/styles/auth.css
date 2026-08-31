@@ -226,8 +226,9 @@
 
 .register-date-input input::-webkit-calendar-picker-indicator {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    right: 0;
+    width: 48px;
     height: 100%;
     margin: 0;
     opacity: 0;
