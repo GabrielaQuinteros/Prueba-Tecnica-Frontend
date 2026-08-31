@@ -186,7 +186,7 @@ frontend/
 
 Antes de iniciar se necesita:
 
-- Node.js `20.19` o superior, o Node.js `22.12` o superior.
+- Node.js `20.19` o superior dentro de la versión 20, o Node.js `22.12` o superior.
 - npm.
 - El backend de Boxful funcionando.
 - MongoDB activo para que el backend pueda guardar los datos.
@@ -216,7 +216,7 @@ La aplicación utiliza por defecto:
 http://localhost:3000
 ```
 
-Si el backend utiliza otra dirección, crea un archivo `.env.local` en la raíz del frontend:
+Copia `.env.example` como `.env.local`. Si el backend utiliza otra dirección, modifica `VITE_API_URL` dentro de ese archivo:
 
 ```env
 VITE_API_URL="http://localhost:3000"
